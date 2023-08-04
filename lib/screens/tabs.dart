@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/meals.dart';
 
@@ -6,35 +7,38 @@ class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() => _TabsScreenState();
+  State<TabsScreen> createState() {
+    return _TabsScreenState();
+  }
 }
 
 class _TabsScreenState extends State<TabsScreen> {
+  int _selectedPageIndex = 0;
+
+  void _selectPage(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    int _selectedPageIndex = 0;
-
-    void changePage(index) {
-      setState(() {
-        _selectedPageIndex = index;
-      });
-    }
-
-    Widget activeScreen = const CategoriesScreen();
+    Widget activePage = const CategoriesScreen();
+    var activePageTitle = 'Categories';
 
     if (_selectedPageIndex == 1) {
-      activeScreen = const MealsScreen(title: 'Favorites', meals: []);
+      activePage = const MealsScreen(meals: []);
+      activePageTitle = 'Your Favorites';
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Meals'),
+        title: Text(activePageTitle),
       ),
-      body: activeScreen,
+      body: activePage,
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {
-          _selectedPageIndex;
-        },
+        onTap: _selectPage,
+        currentIndex: _selectedPageIndex,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.set_meal),
